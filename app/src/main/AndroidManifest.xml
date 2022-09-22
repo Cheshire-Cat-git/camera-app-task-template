@@ -3,7 +3,7 @@
     package="com.example.myapplication">
 
     <uses-feature android:name="android.hardware.camera.any" />
-
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:name=".camera.CameraApplication"
         android:allowBackup="true"
