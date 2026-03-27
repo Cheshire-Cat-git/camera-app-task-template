@@ -1,7 +1,11 @@
 package com.example.myapplication
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.camera.view.PreviewView
+import androidx.core.content.ContextCompat
 import com.example.myapplication.camera.CameraActivity
 
 /**
@@ -18,8 +22,38 @@ class MainActivity : CameraActivity() {
         setContentView(R.layout.activity_main)
         previewView = findViewById(R.id.preview_view)
 
-        // TODO call this method only after Camera permission will be granted.
-        //  in case permission denied show toast message with text: 'Camera permission required for app'
-        launchCamera()
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            )
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            launchCamera()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                launchCamera()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Camera permission required for app",
+                    Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+    }
+
+    companion object {
+        const val REQUEST_CODE = 0
     }
 }
