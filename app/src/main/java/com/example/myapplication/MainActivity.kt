@@ -31,9 +31,6 @@ class MainActivity : CameraActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         previewView = findViewById(R.id.preview_view)
-
-// TODO call this method only after Camera permission will be granted.
-//  in case permission denied show toast message with text: 'Camera permission required for app'
         launchCamera()
         checkPermission()
     }
